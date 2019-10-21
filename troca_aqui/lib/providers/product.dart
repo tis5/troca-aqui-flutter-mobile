@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class Product with ChangeNotifier {
-  final String id;
+  final int id;
   final String nome;
   final String categoria;
   final double valor_aprox;

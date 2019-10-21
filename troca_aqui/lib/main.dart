@@ -6,6 +6,7 @@ import './screens/product_detail_screen.dart';
 import './providers/products.dart';
 import './screens/user_products_screen.dart';
 import './screens/edit_product_screen.dart';
+import './screens/shop_tabs_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
           home: ProductsOverviewScreen(),
           routes: {
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-            UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
+            // UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
+            UserTabsScreen.routeName: (ctx) => UserTabsScreen(),
             EditProductScreen.routeName: (ctx) => EditProductScreen(),
           }),
     );

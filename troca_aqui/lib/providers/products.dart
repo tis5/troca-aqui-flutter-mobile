@@ -7,16 +7,7 @@ import '../models/http_exception.dart';
 import './product.dart';
 
 class Products with ChangeNotifier {
-  List<Product> _items = [
-    Product(
-      id: 'p1',
-      nome: 'Casaco',
-      categoria: 'Roupas',
-      valor_aprox: 30,
-      desejo: 'Sapatos',
-      quant: 2
-    ),
-  ];
+  List<Product> _items = [];
 
   List<Product> get items {
     return [..._items];
@@ -27,18 +18,17 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url = 'https://flutter-teste.firebaseio.com/items.json'; //TODO
-    print("fetch");
+    const url = 'https://troca-aqui-api-e7p5jefkcq-uc.a.run.app/items';
     try {
       final response = await http.get(url);
-      final extractedData = json.decode(response.body) as Map<String, dynamic>; //TODO
+      final extractedData = json.decode(response.body) as List<dynamic>;
       if (extractedData == null) {
         return;
       }
       final List<Product> loadedProducts = [];
-      extractedData.forEach((prodId, prodData) {
+      extractedData.forEach((prodData) {
         loadedProducts.add(Product(
-          id: prodId,
+          id:  prodData['id'],
           nome: prodData['nome'],
           categoria: prodData['categoria'],
           valor_aprox: prodData['valor_aprox'],
@@ -54,7 +44,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url = 'https://flutter-teste.firebaseio.com/items.json'; //TODO
+    const url = 'https://troca-aqui-api-e7p5jefkcq-uc.a.run.app/items'; //TODO
     try {
       final response = await http.post(
         url,
@@ -66,15 +56,15 @@ class Products with ChangeNotifier {
           'quant': product.quant,
         }),
       );
-      final newProduct = Product(
-        nome: product.nome,
-        categoria: product.categoria,
-        valor_aprox: product.valor_aprox,
-        desejo: product.desejo,
-        quant: product.quant,
-        id: json.decode(response.body)['name'], //TODO
-      );
-      _items.add(newProduct);
+      // final newProduct = Product(
+      //   id: json.decode(response.body)['id'], //TODO
+      //   nome: product.nome,
+      //   categoria: product.categoria,
+      //   valor_aprox: product.valor_aprox,
+      //   desejo: product.desejo,
+      //   quant: product.quant,
+      // );
+      // _items.add(newProduct);
       notifyListeners();
     } catch (error) {
       print(error);

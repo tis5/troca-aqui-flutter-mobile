@@ -16,20 +16,7 @@ class UserProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Meus Produtos'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).pushNamed(EditProductScreen.routeName);
-            },
-          ),
-        ],
-      ),
-      drawer: AppDrawer(),
-      body: RefreshIndicator(
+    return RefreshIndicator(
         onRefresh: () => _refreshProducts(context),
         child: Padding(
           padding: EdgeInsets.all(8),
@@ -38,7 +25,7 @@ class UserProductsScreen extends StatelessWidget {
             itemBuilder: (_, i) => Column(
                   children: [
                     UserProductItem(
-                      productsData.items[i].id,
+                      productsData.items[i].id.toString(),
                       productsData.items[i].nome,
                       productsData.items[i].valor_aprox,
                     ),
@@ -47,7 +34,41 @@ class UserProductsScreen extends StatelessWidget {
                 ),
           ),
         ),
-      ),
     );
+
+    // final productsData = Provider.of<Products>(context);
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     title: const Text('Meus Produtos'),
+    //     actions: <Widget>[
+    //       IconButton(
+    //         icon: const Icon(Icons.add),
+    //         onPressed: () {
+    //           Navigator.of(context).pushNamed(EditProductScreen.routeName);
+    //         },
+    //       ),
+    //     ],
+    //   ),
+    //   drawer: AppDrawer(),
+    //   body: RefreshIndicator(
+    //     onRefresh: () => _refreshProducts(context),
+    //     child: Padding(
+    //       padding: EdgeInsets.all(8),
+    //       child: ListView.builder(
+    //         itemCount: productsData.items.length,
+    //         itemBuilder: (_, i) => Column(
+    //               children: [
+    //                 UserProductItem(
+    //                   productsData.items[i].id.toString(),
+    //                   productsData.items[i].nome,
+    //                   productsData.items[i].valor_aprox,
+    //                 ),
+    //                 Divider(),
+    //               ],
+    //             ),
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }
