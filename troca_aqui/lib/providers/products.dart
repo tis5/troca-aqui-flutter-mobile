@@ -13,7 +13,7 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
-  Product findById(String id) {
+  Product findById(int id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
@@ -44,27 +44,31 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url = 'https://troca-aqui-api-e7p5jefkcq-uc.a.run.app/items'; //TODO
+    const url = 'https://troca-aqui-api-e7p5jefkcq-uc.a.run.app/items';
     try {
       final response = await http.post(
         url,
-        body: json.encode({
+        headers: {"Content-type": "application/json"},
+        body: json.encode({"item":{
           'nome': product.nome,
           'categoria': product.categoria,
           'valor_aprox': product.valor_aprox,
           'desejo': product.desejo,
-          'quant': product.quant,
-        }),
+          'quant': product.quant, 
+          "pessoa_id": 1,
+          "disp": true
+        }}),
       );
-      // final newProduct = Product(
-      //   id: json.decode(response.body)['id'], //TODO
-      //   nome: product.nome,
-      //   categoria: product.categoria,
-      //   valor_aprox: product.valor_aprox,
-      //   desejo: product.desejo,
-      //   quant: product.quant,
-      // );
-      // _items.add(newProduct);
+      print(response.body);
+      final newProduct = Product(
+        id: json.decode(response.body)['id'],
+        nome: product.nome,
+        categoria: product.categoria,
+        valor_aprox: product.valor_aprox,
+        desejo: product.desejo,
+        quant: product.quant,
+      );
+      _items.add(newProduct);
       notifyListeners();
     } catch (error) {
       print(error);
@@ -72,26 +76,33 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> updateProduct(String id, Product newProduct) async {
+  Future<void> updateProduct(int id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final url = 'https://flutter-teste.firebaseio.com/items/$id.json'; //TODO
-      await http.patch(url, //TODO
-          body: json.encode({
-            'nome': newProduct.nome,
-            'categoria': newProduct.categoria,
-            'valor_aprox': newProduct.valor_aprox,
-            'desejo': newProduct.desejo,
-            'quant': newProduct.quant,
-          }));
+      final url = 'https://troca-aqui-api-e7p5jefkcq-uc.a.run.app/items/$id'; //TODO
+      await http.patch(
+        url,
+        headers: {"Content-type": "application/json"},
+        body: json.encode({"item":{
+          'nome': newProduct.nome,
+          'categoria': newProduct.categoria,
+          'valor_aprox': newProduct.valor_aprox,
+          'desejo': newProduct.desejo,
+          'quant': newProduct.quant
+        }}));
       _items[prodIndex] = newProduct;
+      print(newProduct.nome); // correto
+      print(newProduct.categoria); // esta recebendo desejo
+      print(newProduct.valor_aprox); //esta recebendo quant
+      print(newProduct.desejo); // null
+      print(newProduct.quant); // sempre zero
       notifyListeners();
     } else {
       print('...');
     }
   }
 
-  Future<void> deleteProduct(String id) async {
+  Future<void> deleteProduct(int id) async {
     final url = 'https://flutter-teste.firebaseio.com/items/$id.json'; //TODO
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
