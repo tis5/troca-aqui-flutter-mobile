@@ -16,14 +16,14 @@ class UserTabsScreen extends StatelessWidget {
         Tab(text: "Chats",),
         Tab(text: "Trocas",),
       ],),
-      actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).pushNamed(EditProductScreen.routeName);
-            },
-          ),
-        ],
+      // actions: <Widget>[
+      //     IconButton(
+      //       icon: const Icon(Icons.add),
+      //       onPressed: () {
+      //         Navigator.of(context).pushNamed(EditProductScreen.routeName);
+      //       },
+      //     ),
+      //   ],
       ),
       drawer: AppDrawer(),
       body: TabBarView(children: <Widget>[
@@ -31,6 +31,13 @@ class UserTabsScreen extends StatelessWidget {
         Center(child: Text("chats"),), 
         Center(child: Text("trocas"),),
       ],),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+              Navigator.of(context).pushNamed(EditProductScreen.routeName);
+            },
+        ),
     ),);
   }
 }

@@ -79,7 +79,7 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(int id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final url = 'https://troca-aqui-api-e7p5jefkcq-uc.a.run.app/items/$id'; //TODO
+      final url = 'https://troca-aqui-api-e7p5jefkcq-uc.a.run.app/items/$id'; 
       await http.patch(
         url,
         headers: {"Content-type": "application/json"},
@@ -103,7 +103,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProduct(int id) async {
-    final url = 'https://flutter-teste.firebaseio.com/items/$id.json'; //TODO
+    final url = 'https://troca-aqui-api-e7p5jefkcq-uc.a.run.app/items/$id';
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
     _items.removeAt(existingProductIndex);

@@ -6,8 +6,30 @@ import '../widgets/user_product_item.dart';
 import '../widgets/app_drawer.dart';
 import './edit_product_screen.dart';
 
-class UserProductsScreen extends StatelessWidget {
+class UserProductsScreen extends StatefulWidget {
   static const routeName = '/user-products';
+
+  @override
+  _UserProductsScreenState createState() => _UserProductsScreenState();
+}
+
+class _UserProductsScreenState extends State<UserProductsScreen> {
+  var _isLoading = false;
+  var _isInit = true;
+
+  @override
+  void didChangeDependencies(){
+    if(_isInit){
+      _isLoading = true;
+      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   Future<void> _refreshProducts(BuildContext context) async {
     await Provider.of<Products>(context).fetchAndSetProducts();
@@ -16,7 +38,11 @@ class UserProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
-    return RefreshIndicator(
+    return _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : RefreshIndicator(
         onRefresh: () => _refreshProducts(context),
         child: Padding(
           padding: EdgeInsets.all(8),

@@ -223,8 +223,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         _editedProduct = Product(
                           nome: _editedProduct.nome,
                           valor_aprox: _editedProduct.valor_aprox,
-                          categoria: value,
-                          desejo: _editedProduct.desejo,
+                          categoria: _editedProduct.categoria,
+                          desejo: value,
                           id: _editedProduct.id,
                           quant: _editedProduct.quant,
                         );
@@ -247,11 +247,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       onSaved: (value) {
                         _editedProduct = Product(
                             nome: _editedProduct.nome,
-                            valor_aprox: double.parse(value),
+                            valor_aprox: _editedProduct.valor_aprox,
                             categoria: _editedProduct.categoria,
                             desejo: _editedProduct.desejo,
                             id: _editedProduct.id,
-                            quant: _editedProduct.quant);
+                            quant: int.parse(value));
                       },
                     ),
                   ],

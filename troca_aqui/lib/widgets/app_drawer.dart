@@ -12,15 +12,15 @@ class AppDrawer extends StatelessWidget {
             title: Text('Bem Vindo!'),
             automaticallyImplyLeading: false,
           ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.shop),
-            title: Text('Loja'),
-            onTap: () {
-              Navigator.of(context).pushReplacementNamed('/');
-            },
-          ),
-          Divider(),
+          // Divider(),
+          // ListTile(
+          //   leading: Icon(Icons.shop),
+          //   title: Text('Loja'),
+          //   onTap: () {
+          //     Navigator.of(context).pushReplacementNamed('/');
+          //   },
+          // ),
+          // Divider(),
           ListTile(
             leading: Icon(Icons.edit),
             title: Text('Meus Produtos'),
