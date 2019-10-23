@@ -136,7 +136,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Informe um valor';
+                          return 'Informe um nome';
                         }
                         return null;
                       },
@@ -162,9 +162,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Informe um valor_aprox';
+                          return 'Informe um valor';
                         }
-                        if (double.tryParse(value) == null) {
+                        if (double.tryParse(value.replaceAll(',', '.')) == null) {
                           return 'Informe um número válido';
                         }
                         return null;
@@ -172,7 +172,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       onSaved: (value) {
                         _editedProduct = Product(
                             nome: _editedProduct.nome,
-                            valor_aprox: double.parse(value),
+                            valor_aprox: double.parse(value.replaceAll(',', '.')),
                             categoria: _editedProduct.categoria,
                             desejo: _editedProduct.desejo,
                             id: _editedProduct.id,
@@ -207,7 +207,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     ),
                     TextFormField(
                       initialValue: _initValues['desejo'],
-                      decoration: InputDecoration(labelText: 'Desejo'),
+                      decoration: InputDecoration(labelText: 'Item Desejado'),
                       focusNode: _desejoFocusNode,
                       onFieldSubmitted: (_) {
                         FocusScope.of(context)
@@ -215,7 +215,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Informe uma categoria.';
+                          return 'Informe um item desejado.';
                         }
                         return null;
                       },
@@ -239,7 +239,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         if (value.isEmpty) {
                           return 'Informe uma quantidade';
                         }
-                        if (double.tryParse(value) == null) {
+                        if (int.tryParse(value) == null) {
                           return 'Informe um número válido';
                         }
                         return null;
