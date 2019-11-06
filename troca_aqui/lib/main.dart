@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import './screens/auth_screen.dart';
+import './screens/create_negociacao_screen.dart';
 import './screens/products_overview_screen.dart';
 import './screens/product_detail_screen.dart';
 import './providers/products.dart';
@@ -26,8 +28,10 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.deepOrange,
             fontFamily: 'Lato',
           ),
-          home: UserTabsScreen(),
+          // home: UserTabsScreen(),
+          home: AuthScreen(),
           routes: {
+            CreateNegociacaoScreen.routeName: (ctx) => CreateNegociacaoScreen(), 
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
             // UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
             UserTabsScreen.routeName: (ctx) => UserTabsScreen(),

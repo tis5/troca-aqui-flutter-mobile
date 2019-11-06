@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/screens/create_negociacao_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
@@ -16,30 +17,55 @@ class ProductDetailScreen extends StatelessWidget {
     ).findById(productId);
     return Scaffold(
       appBar: AppBar(
-        title: Text(loadedProduct.nome),
+        title: Text('Detalhes - ${loadedProduct.nome}'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            Container(
+              height: 200,
+              width: double.infinity,
+              child: Icon(Icons.image)
+            ),
+            SizedBox(height: 30),
             Text(
-              '\$${loadedProduct.valor_aprox}',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 20,
-              ),
+              'Item: ${loadedProduct.nome}'
+            ),
+            SizedBox(height: 30),
+            Text(
+              'Categoria: ${loadedProduct.categoria}'
+            ),
+            SizedBox(height: 30),
+            Text(
+              'Valor Aproximado: \$${loadedProduct.valor_aprox}'
             ),
             SizedBox(
-              height: 10,
+              height: 30,
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              width: double.infinity,
+            Text(
+              'Item de Interesse: ${loadedProduct.desejo}'
+            ),
+            SizedBox(
+              height: 30,
+            ),
+             Text(
+              'Quantidade: ${loadedProduct.quant}'
+            ),
+            SizedBox(
+              height: 90,
+            ),
+            FlatButton(
+              color: Colors.deepOrangeAccent,
               child: Text(
-                loadedProduct.categoria,
-                textAlign: TextAlign.center,
-                softWrap: true,
+              'Negociar'
               ),
-            )
+              onPressed:  () {
+                Navigator.of(context).pushNamed(
+                  CreateNegociacaoScreen.routeName,
+                  arguments: productId,
+                  );
+              },
+            ),
           ],
         ),
       ),

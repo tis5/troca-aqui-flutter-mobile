@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// import 'dart:io';
+// import 'package:flutter/widgets.dart';
+// import 'package:image_picker/image_picker.dart';
+
 import '../providers/product.dart';
 import '../providers/products.dart';
 
@@ -12,6 +16,26 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
+  
+  // File _imageFile;
+
+  // /// Select an image via gallery or camera
+  // Future<void> _pickImage(ImageSource source) async {
+  //   File selected = await ImagePicker.pickImage(source: source);
+
+  //   setState(() {
+  //     _imageFile = selected;
+  //   });
+  // }
+
+  // /// Remove image
+  // void _clear() {
+  //   setState(() => _imageFile = null);
+  // }
+
+
+
+
   final _valor_aproxFocusNode = FocusNode();
   final _categoriaFocusNode = FocusNode();
   final _desejoFocusNode = FocusNode();
@@ -124,139 +148,158 @@ class _EditProductScreenState extends State<EditProductScreen> {
           : Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
-                key: _form,
-                child: ListView(
-                  children: <Widget>[
-                    TextFormField(
-                      initialValue: _initValues['nome'],
-                      decoration: InputDecoration(labelText: 'Nome'),
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context).requestFocus(_valor_aproxFocusNode);
-                      },
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Informe um valor';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _editedProduct = Product(
-                            nome: value,
-                            valor_aprox: _editedProduct.valor_aprox,
-                            categoria: _editedProduct.categoria,
-                            desejo: _editedProduct.desejo,
-                            id: _editedProduct.id,
-                            quant: _editedProduct.quant);
-                      },
+                    key: _form,
+                    child: ListView(
+                      children: <Widget>[
+                        TextFormField(
+                          initialValue: _initValues['nome'],
+                          decoration: InputDecoration(labelText: 'Nome'),
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (_) {
+                            FocusScope.of(context).requestFocus(_valor_aproxFocusNode);
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Informe um valor';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _editedProduct = Product(
+                                nome: value,
+                                valor_aprox: _editedProduct.valor_aprox,
+                                categoria: _editedProduct.categoria,
+                                desejo: _editedProduct.desejo,
+                                id: _editedProduct.id,
+                                quant: _editedProduct.quant);
+                          },
+                        ),
+                        TextFormField(
+                          initialValue: _initValues['valor_aprox'],
+                          decoration: InputDecoration(labelText: 'Valor Aproximado'),
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.number,
+                          focusNode: _valor_aproxFocusNode,
+                          onFieldSubmitted: (_) {
+                            FocusScope.of(context)
+                                .requestFocus(_categoriaFocusNode);
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Informe um valor_aprox';
+                            }
+                            if (double.tryParse(value) == null) {
+                              return 'Informe um número válido';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _editedProduct = Product(
+                                nome: _editedProduct.nome,
+                                valor_aprox: double.parse(value),
+                                categoria: _editedProduct.categoria,
+                                desejo: _editedProduct.desejo,
+                                id: _editedProduct.id,
+                                quant: _editedProduct.quant);
+                          },
+                        ),
+                        TextFormField(
+                          initialValue: _initValues['categoria'],
+                          decoration: InputDecoration(labelText: 'Categoria'),
+                          textInputAction: TextInputAction.next,
+                          focusNode: _categoriaFocusNode,
+                          onFieldSubmitted: (_) {
+                            FocusScope.of(context)
+                                .requestFocus(_desejoFocusNode);
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Informe uma categoria.';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _editedProduct = Product(
+                              nome: _editedProduct.nome,
+                              valor_aprox: _editedProduct.valor_aprox,
+                              categoria: value,
+                              desejo: _editedProduct.desejo,
+                              id: _editedProduct.id,
+                              quant: _editedProduct.quant,
+                            );
+                          },
+                        ),
+                        TextFormField(
+                          initialValue: _initValues['desejo'],
+                          decoration: InputDecoration(labelText: 'Desejo'),
+                          focusNode: _desejoFocusNode,
+                          onFieldSubmitted: (_) {
+                            FocusScope.of(context)
+                                .requestFocus(_quantFocusNode);
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Informe uma categoria.';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _editedProduct = Product(
+                              nome: _editedProduct.nome,
+                              valor_aprox: _editedProduct.valor_aprox,
+                              categoria: _editedProduct.categoria,
+                              desejo: value,
+                              id: _editedProduct.id,
+                              quant: _editedProduct.quant,
+                            );
+                          },
+                        ),
+                        TextFormField(
+                          initialValue: _initValues['quant'],
+                          decoration: InputDecoration(labelText: 'Quantidade'),
+                          keyboardType: TextInputType.number,
+                          focusNode: _quantFocusNode,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Informe uma quantidade';
+                            }
+                            if (double.tryParse(value) == null) {
+                              return 'Informe um número válido';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _editedProduct = Product(
+                                nome: _editedProduct.nome,
+                                valor_aprox: _editedProduct.valor_aprox,
+                                categoria: _editedProduct.categoria,
+                                desejo: _editedProduct.desejo,
+                                id: _editedProduct.id,
+                                quant: int.parse(value));
+                          },
+                        ),
+                        // if (_imageFile != null) ...[
+
+                        //   Image.file(_imageFile),
+
+                        //   Row(
+                        //     children: <Widget>[
+                        //       FlatButton(
+                        //         child: Icon(Icons.refresh),
+                        //         onPressed: _clear,
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ] else ...[
+                        //   IconButton(
+                        //     icon: Icon(Icons.photo_camera),
+                        //     onPressed: () => _pickImage(ImageSource.camera),
+                        //   ),
+                        // ],
+                      ],
                     ),
-                    TextFormField(
-                      initialValue: _initValues['valor_aprox'],
-                      decoration: InputDecoration(labelText: 'Valor Aproximado'),
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.number,
-                      focusNode: _valor_aproxFocusNode,
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context)
-                            .requestFocus(_categoriaFocusNode);
-                      },
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Informe um valor_aprox';
-                        }
-                        if (double.tryParse(value) == null) {
-                          return 'Informe um número válido';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _editedProduct = Product(
-                            nome: _editedProduct.nome,
-                            valor_aprox: double.parse(value),
-                            categoria: _editedProduct.categoria,
-                            desejo: _editedProduct.desejo,
-                            id: _editedProduct.id,
-                            quant: _editedProduct.quant);
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: _initValues['categoria'],
-                      decoration: InputDecoration(labelText: 'Categoria'),
-                      textInputAction: TextInputAction.next,
-                      focusNode: _categoriaFocusNode,
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context)
-                            .requestFocus(_desejoFocusNode);
-                      },
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Informe uma categoria.';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _editedProduct = Product(
-                          nome: _editedProduct.nome,
-                          valor_aprox: _editedProduct.valor_aprox,
-                          categoria: value,
-                          desejo: _editedProduct.desejo,
-                          id: _editedProduct.id,
-                          quant: _editedProduct.quant,
-                        );
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: _initValues['desejo'],
-                      decoration: InputDecoration(labelText: 'Desejo'),
-                      focusNode: _desejoFocusNode,
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context)
-                            .requestFocus(_quantFocusNode);
-                      },
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Informe uma categoria.';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _editedProduct = Product(
-                          nome: _editedProduct.nome,
-                          valor_aprox: _editedProduct.valor_aprox,
-                          categoria: _editedProduct.categoria,
-                          desejo: value,
-                          id: _editedProduct.id,
-                          quant: _editedProduct.quant,
-                        );
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: _initValues['quant'],
-                      decoration: InputDecoration(labelText: 'Quantidade'),
-                      keyboardType: TextInputType.number,
-                      focusNode: _quantFocusNode,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Informe uma quantidade';
-                        }
-                        if (double.tryParse(value) == null) {
-                          return 'Informe um número válido';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _editedProduct = Product(
-                            nome: _editedProduct.nome,
-                            valor_aprox: _editedProduct.valor_aprox,
-                            categoria: _editedProduct.categoria,
-                            desejo: _editedProduct.desejo,
-                            id: _editedProduct.id,
-                            quant: int.parse(value));
-                      },
-                    ),
-                  ],
-                ),
-              ),
+                  ),
+                  
             ),
     );
   }
