@@ -43,7 +43,7 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> addProduct(Product product) async {
+  Future<int> addProduct(Product product) async {
     const url = 'https://troca-aqui-api-e7p5jefkcq-uc.a.run.app/items';
     try {
       final response = await http.post(
@@ -59,7 +59,7 @@ class Products with ChangeNotifier {
           "disp": true
         }}),
       );
-      print(response.body);
+      // print(response.body);
       final newProduct = Product(
         id: json.decode(response.body)['id'],
         nome: product.nome,
@@ -70,6 +70,9 @@ class Products with ChangeNotifier {
       );
       _items.add(newProduct);
       notifyListeners();
+
+      return json.decode(response.body)['id'];
+
     } catch (error) {
       print(error);
       throw error;

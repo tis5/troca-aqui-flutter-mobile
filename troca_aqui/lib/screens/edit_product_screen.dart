@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// import 'dart:io';
-// import 'package:flutter/widgets.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:cloudinary_client/cloudinary_client.dart';
 
 import '../providers/product.dart';
 import '../providers/products.dart';
@@ -16,24 +16,21 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
-  
-  // File _imageFile;
 
-  // /// Select an image via gallery or camera
-  // Future<void> _pickImage(ImageSource source) async {
-  //   File selected = await ImagePicker.pickImage(source: source);
+  CloudinaryClient client = new CloudinaryClient('639879217272486', 'to1_F4Y-jY9jYqHiLaS3RnrvaH8','hn4majmaq');
+  File _image;
 
-  //   setState(() {
-  //     _imageFile = selected;
-  //   });
-  // }
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
-  // /// Remove image
-  // void _clear() {
-  //   setState(() => _imageFile = null);
-  // }
+    setState(() {
+      _image = image;
+    });
+  }
 
-
+  void _clear() {
+    setState(() => _image = null);
+  }
 
 
   final _valor_aproxFocusNode = FocusNode();
@@ -103,8 +100,36 @@ class _EditProductScreenState extends State<EditProductScreen> {
           .updateProduct(_editedProduct.id, _editedProduct);
     } else {
       try {
-        await Provider.of<Products>(context, listen: false)
-            .addProduct(_editedProduct);
+        //
+        //
+        //
+        //
+        //cadastro do item
+        //
+        //
+        //
+        //
+        int responseId = await Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+        print(responseId);
+
+        try {
+          if (_image != null){
+            var response = await client.uploadImage(_image.path);
+            print(response);
+          }
+        } catch (e) {
+          print("erro no upload de imagem");
+        }
+
+        // try {
+        //   if (_image != null){
+        //     var response = await client.uploadImage(_image.path, filename: responseId.toString());
+        //     print(response);
+        //   }
+        // } catch (e) {
+        //   print(e.toString());
+        // }
+
       } catch (error) {
         await showDialog(
           context: context,
@@ -278,24 +303,29 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 quant: int.parse(value));
                           },
                         ),
-                        // if (_imageFile != null) ...[
+                        // Center(
+                        //   child: _image == null
+                        //       ? Text('No image selected.')
+                        //       : Image.file(_image),
+                        // ),
+                        if (_image != null) ...[
 
-                        //   Image.file(_imageFile),
+                          Image.file(_image),
 
-                        //   Row(
-                        //     children: <Widget>[
-                        //       FlatButton(
-                        //         child: Icon(Icons.refresh),
-                        //         onPressed: _clear,
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ] else ...[
-                        //   IconButton(
-                        //     icon: Icon(Icons.photo_camera),
-                        //     onPressed: () => _pickImage(ImageSource.camera),
-                        //   ),
-                        // ],
+                          Row(
+                            children: <Widget>[
+                              FlatButton(
+                                child: Icon(Icons.delete),
+                                onPressed: _clear,
+                              ),
+                            ],
+                          ),
+                        ] else ...[
+                          IconButton(
+                            icon: Icon(Icons.photo_camera),
+                            onPressed: getImage,
+                          ),
+                        ],
                       ],
                     ),
                   ),

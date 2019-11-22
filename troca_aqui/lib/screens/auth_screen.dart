@@ -68,7 +68,8 @@ class AuthScreen extends StatelessWidget {
                     ),
                   ),
                   Flexible(
-                    flex: deviceSize.width > 600 ? 2 : 1,
+                    // flex: deviceSize.width > 600 ? 2 : 1,
+                    flex: 0,
                     child: AuthCard(),
                   ),
                 ],
@@ -143,9 +144,9 @@ class _AuthCardState extends State<AuthCard> {
       ),
       elevation: 8.0,
       child: Container(
-        height: _authMode == AuthMode.Signup ? 320 : 260,
+        height: _authMode == AuthMode.Signup ? 520 : 260,
         constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
+            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 520 : 260),
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -191,9 +192,30 @@ class _AuthCardState extends State<AuthCard> {
                           }
                         : null,
                   ),
-                SizedBox(
-                  height: 20,
+                // SizedBox(
+                //   height: 20,
+                // ),
+                if (_authMode == AuthMode.Signup)
+                TextFormField(
+                  enabled: _authMode == AuthMode.Signup,
+                  decoration: InputDecoration(labelText: 'Nome'),
                 ),
+                if (_authMode == AuthMode.Signup)
+                TextFormField(
+                  enabled: _authMode == AuthMode.Signup,
+                  decoration: InputDecoration(labelText: 'Idade'),
+                ),
+                if (_authMode == AuthMode.Signup)
+                TextFormField(
+                  enabled: _authMode == AuthMode.Signup,
+                  decoration: InputDecoration(labelText: 'Data de Nascimento'),
+                ),
+                if (_authMode == AuthMode.Signup)
+                TextFormField(
+                  enabled: _authMode == AuthMode.Signup,
+                  decoration: InputDecoration(labelText: 'Telefone'),
+                ),
+                
                 if (_isLoading)
                   CircularProgressIndicator()
                 else
