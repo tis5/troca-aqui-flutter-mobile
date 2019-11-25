@@ -11,9 +11,11 @@ class Auth with ChangeNotifier {
       urlRegister,
       headers: {"Content-type": "application/json"},
       body: json.encode(
-        {
-          'email': email,
-          'password': password,
+        {"user":
+          {
+            'email': email,
+            'password': password,
+          }
         },
       ),
     );
