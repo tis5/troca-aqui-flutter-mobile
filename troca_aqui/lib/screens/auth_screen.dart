@@ -1,4 +1,7 @@
 import 'dart:math';
+import '../providers/auth.dart';
+import 'package:provider/provider.dart';
+
 
 import 'package:flutter/material.dart';
 
@@ -97,11 +100,15 @@ class _AuthCardState extends State<AuthCard> {
   Map<String, String> _authData = {
     'email': '',
     'password': '',
+    'nome': '',
+    'cidade': '',
+    'dataNascimento': '',
+    'telefone': '',
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() {
+  Future _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
@@ -111,13 +118,30 @@ class _AuthCardState extends State<AuthCard> {
       _isLoading = true;
     });
 
-    Navigator.pushReplacementNamed(context, '/user-products-tab');
+    // Navigator.pushReplacementNamed(context, '/user-products-tab');
 
-    // if (_authMode == AuthMode.Login) {
-    //   // Log user in
-    // } else {
-    //   // Sign user up
-    // }
+    if (_authMode == AuthMode.Login) {
+
+      Navigator.pushReplacementNamed(context, '/user-products-tab');
+
+      // await Provider.of<Auth>(context, listen: false).login(
+      //   _authData['email'],
+      //   _authData['password'],
+      // );
+
+    } else {
+      
+      await Provider.of<Auth>(context, listen: false).signup(
+        _authData['email'],
+        _authData['password'],
+        _authData['nome'],
+        _authData['cidade'],
+        _authData['dataNascimento'],
+        _authData['telefone'],
+      );
+
+       Navigator.pushReplacementNamed(context, '/user-products-tab');
+    }
     setState(() {
       _isLoading = false;
     });
@@ -144,9 +168,9 @@ class _AuthCardState extends State<AuthCard> {
       ),
       elevation: 8.0,
       child: Container(
-        height: _authMode == AuthMode.Signup ? 520 : 260,
+        height: _authMode == AuthMode.Signup ? 480 : 260,
         constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 520 : 260),
+            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 480 : 260),
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -179,19 +203,19 @@ class _AuthCardState extends State<AuthCard> {
                     _authData['password'] = value;
                   },
                 ),
-                if (_authMode == AuthMode.Signup)
-                  TextFormField(
-                    enabled: _authMode == AuthMode.Signup,
-                    decoration: InputDecoration(labelText: 'Confirmar Senha'),
-                    obscureText: true,
-                    validator: _authMode == AuthMode.Signup
-                        ? (value) {
-                            if (value != _passwordController.text) {
-                              return 'Senhas não estao iguais!';
-                            }
-                          }
-                        : null,
-                  ),
+                // if (_authMode == AuthMode.Signup)
+                //   TextFormField(
+                //     enabled: _authMode == AuthMode.Signup,
+                //     decoration: InputDecoration(labelText: 'Confirmar Senha'),
+                //     obscureText: true,
+                //     validator: _authMode == AuthMode.Signup
+                //         ? (value) {
+                //             if (value != _passwordController.text) {
+                //               return 'Senhas não estao iguais!';
+                //             }
+                //           }
+                //         : null,
+                //   ),
                 // SizedBox(
                 //   height: 20,
                 // ),
@@ -199,23 +223,40 @@ class _AuthCardState extends State<AuthCard> {
                 TextFormField(
                   enabled: _authMode == AuthMode.Signup,
                   decoration: InputDecoration(labelText: 'Nome'),
+                  onSaved: (value) {
+                    _authData['nome'] = value;
+                  },
                 ),
                 if (_authMode == AuthMode.Signup)
                 TextFormField(
                   enabled: _authMode == AuthMode.Signup,
-                  decoration: InputDecoration(labelText: 'Idade'),
+                  decoration: InputDecoration(labelText: 'Cidade'),
+                  onSaved: (value) {
+                    _authData['cidade'] = value;
+                  },
                 ),
                 if (_authMode == AuthMode.Signup)
                 TextFormField(
                   enabled: _authMode == AuthMode.Signup,
+                  keyboardType: TextInputType.datetime,
                   decoration: InputDecoration(labelText: 'Data de Nascimento'),
+                  onSaved: (value) {
+                    _authData['dateNascimento'] = value.toString();
+                  },
                 ),
                 if (_authMode == AuthMode.Signup)
                 TextFormField(
                   enabled: _authMode == AuthMode.Signup,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(labelText: 'Telefone'),
+                  onSaved: (value) {
+                    _authData['telefone'] = value;
+                  },
                 ),
-                
+                SizedBox(
+                  height: 15,
+                ),
+
                 if (_isLoading)
                   CircularProgressIndicator()
                 else
