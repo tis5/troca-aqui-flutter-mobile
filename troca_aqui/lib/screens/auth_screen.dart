@@ -262,7 +262,7 @@ class _AuthCardState extends State<AuthCard> {
                 else
                   RaisedButton(
                     child:
-                        Text(_authMode == AuthMode.Login ? 'LOGIN' : 'CADSTRO'),
+                        Text(_authMode == AuthMode.Login ? 'LOGIN' : 'CADASTRO'),
                     onPressed: _submit,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
