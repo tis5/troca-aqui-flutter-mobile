@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:cloud_functions/cloud_functions.dart';
 import '../screens/edit_product_screen.dart';
 import '../screens/product_detail_screen.dart';
 import '../providers/products.dart';
 
 class UserProductItem extends StatelessWidget {
+
+  final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
+    functionName: 'https://us-central1-trocaaqui.cloudfunctions.net/cloudurl',
+  );
+
+
+  iniState(){
+
+   var resp =  callable.call(<String, dynamic>{
+      'id_item': 'i-19',
+    });
+     print(resp);
+
+
+  }
+
+
+
   final int id;
   final String title;
   final double valor_aprox;

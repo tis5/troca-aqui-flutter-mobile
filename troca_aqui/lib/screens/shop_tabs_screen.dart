@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/app_drawer.dart';
+import '../pages/home_page_chat.dart';
 import 'edit_product_screen.dart';
 import 'user_products_screen.dart';
 
 class UserTabsScreen extends StatefulWidget {
+  final SharedPreferences prefs;
+  UserTabsScreen({this.prefs});
 
   static const routeName = '/user-products-tab';
 
@@ -52,7 +55,7 @@ class _UserTabsScreenState extends State<UserTabsScreen> with SingleTickerProvid
         drawer: AppDrawer(),
         body: TabBarView(controller: _tabController, children: <Widget>[
         UserProductsScreen(), 
-        Center(child: Text("chats"),), 
+        HomePageChat(prefs: widget.prefs),
         Center(child: Text("trocas"),),
       ],),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

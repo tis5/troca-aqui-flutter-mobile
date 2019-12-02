@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloudinary_client/cloudinary_client.dart';
@@ -16,7 +16,7 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
-
+  int itemId;
   CloudinaryClient client = new CloudinaryClient('639879217272486', 'to1_F4Y-jY9jYqHiLaS3RnrvaH8','hn4majmaq');
   File _image;
 
@@ -87,6 +87,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   Future<void> _saveForm() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
@@ -100,21 +101,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
           .updateProduct(_editedProduct.id, _editedProduct);
     } else {
       try {
-        //
-        //
-        //
-        //
-        //cadastro do item
-        //
-        //
-        //
-        //
+
         int responseId = await Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
         print(responseId);
 
         try {
           if (_image != null){
-            var response = await client.uploadImage(_image.path);
+            print('teste');
+            var response = await client.uploadImage(_image.path,filename:'i-'+responseId.toString()+'p-'+prefs.getInt('id_pessoa').toString(),folder:'items');
             print(response);
           }
         } catch (e) {

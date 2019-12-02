@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/http_exception.dart';
 import './product.dart';
 
@@ -18,7 +18,9 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url = 'https://troca-aqui-api-e7p5jefkcq-uc.a.run.app/items';
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    int id = preferences.getInt('id_pessoa');
+    final url = 'https://troca-aqui-api-e7p5jefkcq-uc.a.run.app/itemspessoa/$id';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as List<dynamic>;
@@ -45,6 +47,7 @@ class Products with ChangeNotifier {
 
   Future<int> addProduct(Product product) async {
     const url = 'https://troca-aqui-api-e7p5jefkcq-uc.a.run.app/items';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       final response = await http.post(
         url,
@@ -55,7 +58,7 @@ class Products with ChangeNotifier {
           'valor_aprox': product.valor_aprox,
           'desejo': product.desejo,
           'quant': product.quant, 
-          "pessoa_id": 1,
+          "pessoa_id": prefs.getInt('id_pessoa'),
           "disp": true
         }}),
       );

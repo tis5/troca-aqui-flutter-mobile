@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/screens/create_negociacao_screen.dart';
+import 'package:chat/screens/create_negociacao_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
